@@ -1,0 +1,30 @@
+from flask import Flask
+import os
+import time
+import subprocess
+
+app = Flask(__name__)
+
+@app.route('/htop')
+def htop():
+    # Get full name (replace with your name)
+    full_name = "Your Name Here"
+
+    # Get system username
+    username = os.getenv("USER", "codespace")
+
+    # Get server time in IST
+    server_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+
+    # Get 'top' command output
+    top_output = subprocess.getoutput('top -b -n 1')
+
+    return f'''
+        <h1>Name: {full_name}</h1>
+        <h2>User: {username}</h2>
+        <h2>Server Time (IST): {server_time}</h2>
+        <pre>{top_output}</pre>
+    '''
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
